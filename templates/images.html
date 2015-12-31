@@ -1,5 +1,5 @@
 {% extends "layout.html" %}
-{% block title %}<a href="/">Repositories</a> &gt; {{ name }}{% endblock %}
+{% block title %}<a href="/">{{ registry }}</a> / {{ name }}{% endblock %}
 {% block content %}
     <div class="row">
         <div class="col-md-12">
@@ -13,12 +13,38 @@
                 <tbody>
                 {%- for tag in tags %}
                     <tr>
-                        <td><a href="/image/{{ name }}/{{ tag }}/manifests">{{ tag }}</a></td>
-                        <td><a href="/image/{{ name }}/{{ tag }}/delete">delete</a></td>
+                        <td><a href="/manifests/{{ name }}/{{ tag }}">{{ tag }}</a></td>
+                        <td><a class="btn btn-primary btn-xs"
+                               data-toggle="modal"
+                               data-target="#confirm-delete"
+                               data-image="{{ name }}:{{ tag }}"
+                               data-href="/delete/{{ name }}/{{ tag }}">
+                            <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                            Delete</a></td>
                     </tr>
                 {%- endfor %}
                 </tbody>
             </table>
+            <div class="modal fade" id="confirm-delete" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title" id="myModalLabel">Confirm</h4>
+                        </div>
+                        <div class="modal-body">
+                            <h4>Sure to delete <strong id="resourceName"></strong>?</h4>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                            <a href="javascript:void(0);" class="btn btn-danger danger">Delete</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 {% endblock %}
+{% block js -%}
+    <script src="/static/js/ui.js"></script>
+{%- endblock %}
