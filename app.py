@@ -6,14 +6,14 @@ from datetime import datetime
 from os import environ
 from flask import Flask, request, render_template, redirect, url_for
 
-REGISTRY_URL = environ.get("REGISTRY_URL", "http://localhost:5000")
-DEBUG = environ.get("DEBUG", True)
+REGISTRY_URL = environ.get("REGISTRY_URL", "http://172.17.0.1:5000")
+DEBUG = environ.get("DEBUG", False)
 
 app = Flask(__name__)
 app.config.from_object(__name__)
 app.debug = DEBUG
 
-app.jinja_env.globals['registry'] = REGISTRY_URL
+app.jinja_env.globals['registry'] = REGISTRY_URL[REGISTRY_URL.find("//")+2:]
 
 @app.route("/")
 def index():
@@ -183,5 +183,4 @@ def _filesizeformat(bytes, precision=2):
     )
 
 if __name__ == "__main__":
-    print "debug:", DEBUG
     app.run(host='0.0.0.0', debug=DEBUG, port=8080)
