@@ -37,7 +37,7 @@
             <div id="navbar" class="navbar-collapse collapse">
                 <form class="navbar-form navbar-right" method="get">
                     <div class="form-group">
-                        <input type="text" placeholder="image" class="form-control">
+                        <input type="text" placeholder="image" name="image" class="form-control">
                     </div>
                     <button type="submit" class="btn btn-primary">Search</button>
                 </form>
@@ -50,6 +50,22 @@
             <h1>{% block title %}{% endblock %}<small>{% block subTitle %}{% endblock %}</small></h1>
         </div>
         <div class="row">
+            {%- if info %}
+            <div class="col-md-12">
+                <div class="alert alert-info">
+                	<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                	<strong>Info</strong> {{ info }}
+                </div>
+            </div>
+            {%- endif %}
+            {%- if error %}
+                <div class="col-md-12">
+                    <div class="alert alert-warning">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                        <strong>Error</strong> {{ error }}
+                    </div>
+                </div>
+            {%- endif %}
             <div class="col-md-12">
                 {% block content %}{% endblock %}
             </div>
@@ -57,7 +73,7 @@
 
         <hr>
         <footer>
-            <p>By <a href="http://www.orctom.com">orctom</a></p>
+            <p>By <a href="https://github.com/orctom/docker-registry-ui">orctom</a></p>
         </footer>
     </div>
 

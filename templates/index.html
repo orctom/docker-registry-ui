@@ -6,13 +6,15 @@
             <table class="table table-striped table-hover">
             	<thead>
         			<tr>
-        				<th>repositories</th>
+        				<th>Repository</th>
+        				<th>Tags</th>
         			</tr>
         		</thead>
                 <tbody>
                     {%- for repo in repos %}
                     <tr>
-                        <td><a href="images/{{ repo }}">{{ repo }}</a></td>
+                        <td><a href="images/{{ repo.name }}">{{ repo.name }}</a></td>
+                        <td>{{ repo.tags }}</td>
                     </tr>
                     {%- endfor %}
                 </tbody>

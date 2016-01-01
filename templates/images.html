@@ -6,19 +6,25 @@
             <table class="table table-striped table-hover">
                 <thead>
                     <tr>
-                        <th>{{ name }}</th>
-                        <th>delete</th>
+                        <th>Tag</th>
+                        <th>Created</th>
+                        <th>Layers</th>
+                        <th>Size</th>
+                        <th>Delete</th>
                     </tr>
                 </thead>
                 <tbody>
                 {%- for tag in tags %}
                     <tr>
-                        <td><a href="/manifests/{{ name }}/{{ tag }}">{{ tag }}</a></td>
+                        <td><a href="/manifests/{{ name }}/{{ tag.tag }}">{{ tag.tag }}</a></td>
+                        <td>{{ tag.created }}</td>
+                        <td>{{ tag.layersCount }}</td>
+                        <td>{{ tag.size }}</td>
                         <td><a class="btn btn-primary btn-xs"
                                data-toggle="modal"
                                data-target="#confirm-delete"
-                               data-image="{{ name }}:{{ tag }}"
-                               data-href="/delete/{{ name }}/{{ tag }}">
+                               data-image="{{ name }}:{{ tag.tag }}"
+                               data-href="/delete/{{ name }}/{{ tag.tag }}">
                             <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
                             Delete</a></td>
                     </tr>
