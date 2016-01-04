@@ -24,8 +24,11 @@ def index():
     for repo in result['repositories']:
         if None != image and image not in repo:
             continue
-        tags = _query("/%s/tags/list" % repo)
-        repos.append({"name": repo, "tags": len(tags['tags'])})
+        try:
+            tags = _query("/%s/tags/list" % repo)
+            repos.append({"name": repo, "tags": len(tags['tags'])})
+        except:
+            repos.append({"name": repo, "tags": 0})
     if (1 == len(repos)):
         return redirect("/images/%s" % repos[0]["name"])
     return render_template('index.html', repos=repos)
@@ -172,7 +175,7 @@ def url_error(e):
 
 def _query(path):
     if DEBUG:
-        print "querying:", REGISTRY_URL + path
+        print "querying:", REGISTRY_URL + "/v2" + path
     response = urllib2.urlopen(REGISTRY_URL + "/v2" + path)
     result = json.loads(response.read())
     if "Docker-Content-Digest" in response.headers:
