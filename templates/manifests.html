@@ -18,7 +18,7 @@
                     {%- for data in layers %}
                         <tr>
                             <td>{{ data.id|truncate(15, True) }}</td>
-                            <td><pre style="width: 800px;">{% autoescape false %}{{ data.command }}{% endautoescape %}</pre></td>
+                            <td><pre style="white-space:pre-wrap;">{% autoescape false %}{{ data.command }}{% endautoescape %}</pre></td>
                             <td>{{ data.size }}</td>
                         </tr>
                     {%- endfor %}

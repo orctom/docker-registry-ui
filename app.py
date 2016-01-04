@@ -107,7 +107,8 @@ def _manifests(repo, tag, image=None):
     layers = []
     total_size = 0
     for history in result['history']:
-        raw_data = history['v1Compatibility'].replace('\u0026\u0026', '\u0026\u0026 \\\\<br/>')
+        raw_data = history['v1Compatibility']
+        raw_data = re.sub('\s+\\\\u0026\\\\u0026', ' \\\\\\\\<br/>  \\\\u0026\\\\u0026', raw_data)
         raw_data = re.sub('\s{8}', ' \\\\\\\\<br/>', raw_data)
         data = json.loads(raw_data)
         if 'Size' in data:
