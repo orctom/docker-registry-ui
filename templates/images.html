@@ -15,6 +15,7 @@
                 </thead>
                 <tbody>
                 {%- for tag in tags %}
+                    {%- if tag.tagId %}
                     <tr>
                         <td><a href="/manifests/{{ name }}/{{ tag.tag }}">{{ tag.tag }}</a></td>
                         <td>{{ tag.created }}</td>
@@ -28,6 +29,12 @@
                             <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
                             Delete</a></td>
                     </tr>
+                    {%- else %}
+                    <tr>
+                        <td>{{ tag.tag }}</td>
+                        <td colspan="4">Image deleted, processing in background</td>
+                    </tr>
+                    {%- endif %}
                 {%- endfor %}
                 </tbody>
             </table>

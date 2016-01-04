@@ -26,6 +26,8 @@ def index():
             continue
         tags = _query("/%s/tags/list" % repo)
         repos.append({"name": repo, "tags": len(tags['tags'])})
+    if (1 == len(repos)):
+        return redirect("/images/%s" % repos[0]["name"])
     return render_template('index.html', repos=repos)
 
 @app.route("/images/<repo>")
@@ -36,16 +38,26 @@ def images(repo, image=None):
     else:
         result = _query("/%s/%s/tags/list" % (repo, image))
 
+    print result
     tags = []
     for tag in result["tags"]:
-        manifests = _manifests(repo, tag, image)
-        tags.append({
-            "tag": tag,
-            "tagId": manifests["tagId"],
-            "created": manifests["created"],
-            "layersCount": manifests["layersCount"],
-            "size": manifests["size"],
-        })
+        try:
+            manifests = _manifests(repo, tag, image)
+            tags.append({
+                "tag": tag,
+                "tagId": manifests["tagId"],
+                "created": manifests["created"],
+                "layersCount": manifests["layersCount"],
+                "size": manifests["size"],
+            })
+        except:
+            tags.append({
+                "tag": tag,
+                "tagId": None,
+                "created": None,
+                "layersCount": None,
+                "size": None,
+            })
     info = request.args.get('info')
     error = request.args.get('error')
     return render_template('images.html',
@@ -69,15 +81,13 @@ def delete(repo, tag, image=None):
     try:
         req = urllib2.Request(url)
         req.get_method = lambda: 'DELETE'
-        res = urllib2.urlopen(req)
+        urllib2.urlopen(req)
 
-        content = json.loads(res.read())
-        print content
-        image_full_name = (repo + ":" + tag) if Node == image else (repo + "/" +image + ":" + tag)
-        info = "Image: " + image_full_name + " deleted."
+        image_full_name = (repo + ":" + tag) if None == image else (repo + "/" +image + ":" + tag)
+        info = "Request accepted by registry, deleting " + image_full_name + " in background."
         error = None
     except urllib2.HTTPError:
-        error = "Operation not supported yet by registry."
+        error = "Deletion of images is not enabled in registry."
         info = None
 
     return redirect(url_for("images",
